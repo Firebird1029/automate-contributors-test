@@ -12,9 +12,29 @@ jobs:
             contents: write
             pull-requests: write
         steps:
+            # Update contributor list
             - name: Contribute List
               uses: akhilmhdh/contributors-readme-action@v2.3.10
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               with:
+                  # https://github.com/marketplace/actions/contribute-list#optional-parameters
                   readme_path: MAINTAINERS.md
+                  use_username: false
+
+            # Update contributor count
+            - name: Checkout repository
+              uses: actions/checkout@v3
+
+            - name: Get repository contributors
+              id: get_contributors
+              run: |
+                  REPO_OWNER=$(echo $GITHUB_REPOSITORY | cut -d'/' -f1)
+                  REPO_NAME=$(echo $GITHUB_REPOSITORY | cut -d'/' -f2)
+                  CONTRIBUTORS=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/contributors?per_page=1" | jq '. | length')
+                  echo "Total contributors: $CONTRIBUTORS"
+                  echo "::set-output name=contributors::$CONTRIBUTORS"
+
+            - name: Display number of contributors
+              run: |
+                  echo "Number of contributors to this repository: ${{ steps.get_contributors.outputs.contributors }}"
