@@ -1,6 +1,6 @@
 # Contributors
 
-Total number of contributors: <!--CONTRIBUTOR COUNT START--><!--CONTRIBUTOR COUNT END-->
+Total number of contributors: <!--CONTRIBUTOR COUNT START--> foo <!--CONTRIBUTOR COUNT END-->
 
 <!-- readme: contributors -start -->
 <table>
