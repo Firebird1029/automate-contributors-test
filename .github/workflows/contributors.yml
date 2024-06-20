@@ -39,7 +39,7 @@ jobs:
             - name: Replace slug in MAINTAINERS.md with number of contributors
               run: |
                   CONTRIBUTORS=${{ steps.get_contributors.outputs.contributors }}
-                  sed -i '/<!--CONTRIBUTOR COUNT START-->/,/<!--CONTRIBUTOR COUNT END-->/c\<!--CONTRIBUTOR COUNT START-->'"$CONTRIBUTORS"'<!--CONTRIBUTOR COUNT END-->' MAINTAINERS.md
+                  sed -i -e '/<!--CONTRIBUTOR COUNT START-->/!b' -e ':a' -e 'n' -e '/<!--CONTRIBUTOR COUNT END-->/!ba' -e 'c\<!--CONTRIBUTOR COUNT START-->'"$CONTRIBUTORS"'<!--CONTRIBUTOR COUNT END-->' MAINTAINERS.md
 
             - name: Commit and push changes
               run: |
