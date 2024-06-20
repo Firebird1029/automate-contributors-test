@@ -32,7 +32,7 @@ jobs:
               run: |
                   REPO_OWNER=$(echo $GITHUB_REPOSITORY | cut -d'/' -f1)
                   REPO_NAME=$(echo $GITHUB_REPOSITORY | cut -d'/' -f2)
-                  CONTRIBUTORS=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/contributors?per_page=1" | jq '. | length')
+                  CONTRIBUTORS=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/contributors?per_page=100" | jq '. | length')
                   echo "Total contributors: $CONTRIBUTORS"
                   echo "contributors=$CONTRIBUTORS" >> $GITHUB_OUTPUT
 
