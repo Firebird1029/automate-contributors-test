@@ -1,4 +1,7 @@
 # Contributors
+
+Total number of contributors: <!--CONTRIBUTOR COUNT START--><!--CONTRIBUTOR COUNT END-->
+
 <!-- readme: contributors -start -->
 <table>
 	<tbody>
