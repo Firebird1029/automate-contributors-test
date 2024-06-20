@@ -25,7 +25,7 @@ jobs:
 
             # Update contributor count
             - name: Checkout repository
-              uses: actions/checkout@v3
+              uses: actions/checkout@v4
 
             - name: Get repository contributors count
               id: get_contributors
@@ -39,7 +39,11 @@ jobs:
             - name: Replace slug in MAINTAINERS.md with number of contributors
               run: |
                   CONTRIBUTORS=${{ steps.get_contributors.outputs.contributors }}
-                  sed -i '/<!--CONTRIBUTOR COUNT START-->/, /<!--CONTRIBUTOR COUNT END-->/c\<!--CONTRIBUTOR COUNT START-->'"$CONTRIBUTORS"'<!--CONTRIBUTOR COUNT END-->' MAINTAINERS.md
+                  sed -i '/<!--CONTRIBUTOR COUNT START-->/,/<!--CONTRIBUTOR COUNT END-->/ { 
+                  /<!--CONTRIBUTOR COUNT START-->/! 
+                  /<!--CONTRIBUTOR COUNT END-->/!d 
+                  }
+                  /<!--CONTRIBUTOR COUNT START-->/a '"$CONTRIBUTORS" MAINTAINERS.md
 
             - name: Commit and push changes
               run: |
