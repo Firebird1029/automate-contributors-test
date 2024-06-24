@@ -35,15 +35,10 @@ jobs:
               id: get_contributors
               # https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#list-repository-contributors
               # https://docs.github.com/en/graphql/reference/objects#repositorycollaboratorconnection
+              # https://docs.github.com/en/graphql/guides/forming-calls-with-graphql#communicating-with-graphql
+              # CANNOT have newlines!
               run: |
-                  TEMPLATE_QUERY='
-                  {
-                      repository(owner: "OWNER", name: "REPO") {
-                      collaborators {
-                          totalCount
-                      }
-                      }
-                  }'
+                  TEMPLATE_QUERY='query { repository(owner: \"OWNER\", name: \"REPO\") { collaborators { totalCount } } }'
                   OWNER=$(echo $GITHUB_REPOSITORY | cut -d'/' -f1)
                   REPO=$(echo $GITHUB_REPOSITORY | cut -d'/' -f2)
                   QUERY=$(echo $TEMPLATE_QUERY | sed "s/OWNER/$OWNER/" | sed "s/REPO/$REPO/")
