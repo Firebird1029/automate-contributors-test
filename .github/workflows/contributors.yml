@@ -34,10 +34,10 @@ jobs:
             - name: Get repository contributors count
               id: get_contributors
               # https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#list-repository-contributors
+              # https://docs.github.com/en/graphql/reference/objects#repositorycollaboratorconnection
               run: |
-                  REPO_OWNER=$(echo $GITHUB_REPOSITORY | cut -d'/' -f1)
-                  REPO_NAME=$(echo $GITHUB_REPOSITORY | cut -d'/' -f2)
-                  CONTRIBUTORS=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/contributors?per_page=100" | jq '. | length')
+                  QUERY=$(echo $QUERY | sed "s/OWNER/$(echo $GITHUB_REPOSITORY | cut -d'/' -f1)/" | sed "s/REPO/$(echo $GITHUB_REPOSITORY | cut -d'/' -f2)/")
+                  CONTRIBUTORS=$(curl -s -X POST -H "Authorization: bearer ${{ secrets.GITHUB_TOKEN }}" -H "Content-Type: application/json" -d "{\"query\": \"$QUERY\"}" https://api.github.com/graphql | jq -r '.data.repository.collaborators.totalCount')
                   echo "Total contributors: $CONTRIBUTORS"
                   echo "contributors=$CONTRIBUTORS" >> $GITHUB_OUTPUT
 
